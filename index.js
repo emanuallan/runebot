@@ -21,9 +21,9 @@ function main() {
         robot.mouseClick();
         // wait for walking and chopping to complete.
         // dropLogs() will wait for longer if needed
-        sleep(3000);
+        sleep(8000);
 
-        dropLogs();
+        //dropLogs();
     }
 }
 
@@ -66,8 +66,9 @@ function testScreenCapture() {
 
     // testing: the pixel at 30, 18 when I screen capture VSCode should be that bright blue:
     // RBG of 35, 170, 242 which we convert into hex color #23aaf2
-    var pixel_color = img.colorAt(30, 18);
+    var pixel_color = img.colorAt(13, 33);
     console.log(pixel_color);
+    console.log("should be DDDDDD");
     // when I test this I get 23a9f2, which is very close to what we expect.
 }
 
@@ -77,18 +78,19 @@ function findTree() {
     // the image at width = 1300, height = 400.
     // you should adjust this to your own screen size. you might also try reducing the size
     // if this is running slow for you.
-    var x = 300, y = 300, width = 1300, height = 400;
+    var x = 100, y = 100, width = 700, height = 500;
     var img = robot.screen.capture(x, y, width, height);
 
     // make an array that contains colors of the trees we want to click on.
     // I'm targeting the brown colors of the trunks.
-    var tree_colors = ["5b462a", "60492c", "6a5130", "705634", "6d5432", "574328"];
+    var tree_colors = ["624522", "614523", "2f210f", "453019", "624522", "6b4b26"];
 
     // sample up to 500 random pixels inside our screenshot until we find one that matches
     // a tree color.
     for (var i = 0; i < 500; i++) {
         var random_x = getRandomInt(0, width-1);
         var random_y = getRandomInt(0, height-1);
+        
         var sample_color = img.colorAt(random_x, random_y);
 
         if (tree_colors.includes(sample_color)) {
@@ -123,6 +125,7 @@ function rotateCamera() {
 function confirmTree(screen_x, screen_y) {
     // first move the mouse to the given coordinates
     robot.moveMouse(screen_x, screen_y);
+    return true;
     // wait a moment for the help text to appear
     sleep(300);
 
