@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const treeSchema = new Schema( 
     
 {
-    _id: String,
+    //CHANGE
+    _id: {type: mongoose.Schema.Types.ObjectId},
     tree : { 
         type: String, 
         required: [true, "Tree name required"],
@@ -17,9 +18,6 @@ const treeSchema = new Schema(
     timestamps: true,
 });
 
-const woodcuttingSchema = new Schema({
-    trees : { type: [treeSchema], required: true},
-},
-{_id: false});
+const Tree = mongoose.model('Tree', treeSchema);
 
-module.exports =  woodcuttingSchema;
+module.exports =  Tree;

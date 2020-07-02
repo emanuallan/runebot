@@ -1,7 +1,7 @@
 const router = require('express').Router();
 let Color = require('../models/color.model');
-let Woodcutting = require('../models/woodcutting.model');
-const woodcuttingSchema = require('../models/woodcutting.model');
+let TreeColor = require('../models/woodcutting/tree.model');
+const mongoose = require('mongoose');
 
 router.route('/').get((req, res) => {
     Color.find()
@@ -15,7 +15,13 @@ router.route('/woodcutting/add').post((req, res) => {
 
     //creating and setting color-tree id
     let tree = woodcutting.trees[woodcutting.trees.length - 1];
-    tree = {...tree, _id: tree.tree + color}
+
+
+//CHANGE
+    tree = {...tree, _id: mongoose.Types.ObjectId(tree.tree + color)}
+
+
+
     woodcutting.trees[woodcutting.trees.length - 1] = tree;
 
     // creating new tree color
@@ -28,10 +34,13 @@ router.route('/woodcutting/add').post((req, res) => {
 });
 
 router.route('/woodcutting/found_tree/:id').post((req, res) => {
-    Color.findById(req.params.id)
+
+    //CHANGE
+    console.log(mongoose.Types.ObjectId(req.params.id).toString());
+
+    TreeColor.findById(mongoose.Types.ObjectId(req.params.id).toString())
         .then(color => {
             console.log(color);
-            color.color = "red"
 
             
 

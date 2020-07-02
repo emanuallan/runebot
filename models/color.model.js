@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const woodcuttingSchema = require('./woodcutting.model');
+const woodcuttingSchema = require('./woodcutting/woodcutting.model').schema;
 const Schema = mongoose.Schema;
 
 const colorSchema = new Schema({
