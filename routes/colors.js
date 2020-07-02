@@ -1,5 +1,7 @@
 const router = require('express').Router();
 let Color = require('../models/color.model');
+let Woodcutting = require('../models/woodcutting.model');
+const woodcuttingSchema = require('../models/woodcutting.model');
 
 router.route('/').get((req, res) => {
     Color.find()
@@ -9,21 +11,29 @@ router.route('/').get((req, res) => {
 
 router.route('/woodcutting/add').post((req, res) => {
     const color = req.body.color;
-    const woodcutting = req.body.woodcutting;
+    let woodcutting = req.body.woodcutting;
 
-    const newColor = new Color({ color, woodcutting });
-    // color model still needs the woodcutting schema type
+    //creating and setting color-tree id
+    let tree = woodcutting.trees[woodcutting.trees.length - 1];
+    tree = {...tree, _id: tree.tree + color}
+    woodcutting.trees[woodcutting.trees.length - 1] = tree;
 
-    newColor.save()
+    // creating new tree color
+    const newTreeColor = new Color({ color, woodcutting});
+
+    // save onto db
+    newTreeColor.save()
         .then(() => res.json('Color Added'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/woodcutting/update/:id').post((req, res) => {
+router.route('/woodcutting/found_tree/:id').post((req, res) => {
     Color.findById(req.params.id)
         .then(color => {
-            color.color = req.body.color;
-            color.woodcutting = req.body.woodcutting;
+            console.log(color);
+            color.color = "red"
+
+            
 
             color.save()
                 .then(() => res.json('Color updated!'))
